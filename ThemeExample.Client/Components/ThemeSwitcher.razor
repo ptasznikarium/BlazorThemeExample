@@ -1,0 +1,28 @@
+﻿@inject IJSRuntime JS
+
+<header class="navbar navbar-expand-lg bd-navbar sticky-top" style="height:50px">
+    <button type="button" @onclick="SwitchTheme">@icon</button>
+</header>
+
+@code {
+    string currentTheme = "";
+    string icon = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            currentTheme = await JS.InvokeAsync<string>("getTheme");
+            icon = (currentTheme.Equals("dark") ? "🌙" : "☀️");
+            StateHasChanged();
+        }
+    }
+
+    private async void SwitchTheme()
+    {
+        currentTheme = (currentTheme.Equals("dark") ? "light" : "dark");
+        await JS.InvokeVoidAsync("switchTheme", currentTheme);
+        icon = (currentTheme.Equals("dark") ? "🌙" : "☀️");
+        StateHasChanged();
+    }
+}

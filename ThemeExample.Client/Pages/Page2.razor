@@ -1,0 +1,30 @@
+﻿@inject IJSRuntime JS
+@page "/page2"
+
+<NavLink href="/">home</NavLink>
+
+<br>
+
+@mode
+
+@code {
+    string mode = "";
+
+    protected override void OnInitialized()
+    {
+        if (OperatingSystem.IsBrowser())
+        {
+            mode = "WASM";
+        }
+        else
+        {
+            mode = "Server";
+        }
+    }
+
+    private async void SwitchTheme()
+    {
+        var theme = await JS.InvokeAsync<string>("getTheme");
+        await JS.InvokeVoidAsync("switchTheme", theme.Equals("dark") ? "light" : "dark");
+    }
+}

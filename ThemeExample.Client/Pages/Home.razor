@@ -1,0 +1,23 @@
+﻿@page "/"
+
+<NavLink href="/page2">page2</NavLink>
+
+<br>
+
+@mode
+
+@code
+{
+    string mode = "";
+    protected override void OnInitialized()
+    {
+        if (OperatingSystem.IsBrowser())
+        {
+            mode = "WASM";
+        }
+        else
+        {
+            mode = "Server";
+        }
+    }
+}
